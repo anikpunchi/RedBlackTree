@@ -18,6 +18,7 @@ class RedBlackTree{
     public:
         RedBlackTree();
         RedBlackTree(const RedBlackTree&);
+        RBTNode* copypaste(RBTNode oldroot, RBTNode newroot);
         void Insert(int key);
         bool Contains(int key);
         int GetMin() const;

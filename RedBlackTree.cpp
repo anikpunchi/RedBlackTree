@@ -9,9 +9,8 @@ using namespace std;
 RedBlackTree::RedBlackTree(){
     root = nullptr;
 }
-RedBlackTree::RedBlackTree(const RedBlackTree& tree){
-    
-}
+
+
 void RedBlackTree::Insert(int key){
     if (root == nullptr){
         root = new RBTNode;
@@ -224,8 +223,13 @@ string RedBlackTree::ToPostfixString(RBTNode* node) const{
         color = " R";
     }
     
-    string left = ToInfixString(node->left);
-    string right = ToInfixString(node->right);
+        string left = ToPostfixString(node->left);
+    
+    
+    
+    
+        string right = ToPostfixString(node->right);
+    
     return left + right + color + to_string(node->key)+ " ";
 
 }
