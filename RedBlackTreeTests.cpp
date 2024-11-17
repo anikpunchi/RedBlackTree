@@ -250,7 +250,7 @@ int main(){
 	TestToStrings();
 	TestInsertRandomTests();
 
-	//TestCopyConstructor();
+	TestCopyConstructor();
 
 	TestContains();
 	TestGetMinimumMaximum();
