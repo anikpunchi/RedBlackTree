@@ -25,7 +25,7 @@ void RedBlackTree::Insert(int key){
     }
     
     RBTNode* current = root;
-    RBTNode* parent = nullptr;
+    RBTNode* nodesparent = nullptr;
     RBTNode* newNode = new RBTNode();
     newNode->color = COLOR_RED;
     newNode->key = key;
@@ -34,7 +34,7 @@ void RedBlackTree::Insert(int key){
     newNode->parent = nullptr;
 
     while (current != nullptr){
-        parent = current;
+        nodesparent = current;
         if (newNode->key < current->key){
             current = current->left;
         }
@@ -43,97 +43,89 @@ void RedBlackTree::Insert(int key){
         }
 
     }
-    newNode->parent = parent;
-    if (parent == nullptr){
-       root = newNode;
-    }
-    else if (newNode->key < parent->key){
-        parent->left = newNode;
+    newNode->parent = nodesparent;
+    
+    if (newNode->key < nodesparent->key){
+        nodesparent->left = newNode;
 
     }
     else{
-        parent->right = newNode;
+        nodesparent->right = newNode;
     }
         
 
-    if (newNode->parent->parent == nullptr){
-        return;
-    }
+    
     FixTree(newNode);
     
 
 }
 void RedBlackTree::FixTree(RBTNode* node){
-
-    
-    RBTNode* parent = nullptr;
-    RBTNode* grandparent = nullptr;
-    RBTNode* uncle = nullptr;
-
    
     // if parent of newNode is red 
     while (node->parent->color == COLOR_RED){
-        RBTNode* parent = node->parent;
-        RBTNode* grandparent = parent->parent;
+        
         //case 1 if the node is the left child of the grandparent
-        if (grandparent == nullptr){
-            break;
-        }
-        if (parent == grandparent->left){
-            RBTNode* uncle = grandparent->right;
+        
+        if (node->parent == node->parent->parent->left){
+            RBTNode* uncle = node->parent->parent->right;
             //case1a if the uncle is black
             if (uncle == nullptr||uncle->color == COLOR_BLACK){
                 //if the node is a right child we need to left rotate and then right rotate
-                if (node == parent->right){
-                    node = parent;
+                if (node == node->parent->right){
+                    node = node->parent;
                     leftRotate(node);
                 }
                 //if the node is a left child of the parent we just do the right rotation
-                parent->color = COLOR_BLACK;
-                grandparent->color = COLOR_RED;
-                rightRotate(grandparent);
+                node->parent->color = COLOR_BLACK;
+                node->parent->parent->color = COLOR_RED;
+                rightRotate(node->parent->parent);
             }
             //case1b if the uncle is red we just recolor and repeat. The while loop will ensure the repeating steps
-            if (uncle->color == COLOR_RED){
-                parent->color = COLOR_BLACK;
+            else{ 
                 uncle->color = COLOR_BLACK;
-                grandparent->color = COLOR_RED;
-                node = grandparent; //move the node up and repeat
+                node->parent->color = COLOR_BLACK;
+                node->parent->parent->color = COLOR_RED;
+                node = node->parent->parent; //move the node up and repeat
 
             }
         }
+        
         //case 2 if the node is the right child of the grandparent. i didnt code this from scratch i copied my code from case 1 and changed very word that said 'left' ro 'right' and vice versa
         else{
-            RBTNode* uncle = grandparent->left;
+            RBTNode* uncle = node->parent->parent->left;
             if (uncle == nullptr||uncle->color == COLOR_BLACK){
                 //if the node is a left child we need to right rotate and then left rotate 
-                if (node == parent->left){
-                    node = parent;
+                if (node == node->parent->left){
+                    node = node->parent;
                     rightRotate(node);
                 }
                 //if the node is a right child of the parent we just do the left rotation
-                parent->color = COLOR_BLACK;
-                grandparent->color = COLOR_RED;
-                leftRotate(grandparent);
+                node->parent->color = COLOR_BLACK;
+                node->parent->parent->color = COLOR_RED;
+                leftRotate(node->parent->parent);
             }
             //case1b if the uncle is red we just recolor and repeat. The while loop will ensure the repeating steps
-            if (uncle->color == COLOR_RED){
-                parent->color = COLOR_BLACK;
+            else{ 
                 uncle->color = COLOR_BLACK;
-                grandparent->color = COLOR_RED;
-                node = grandparent; //move the node up and repeat
+                node->parent->color = COLOR_BLACK;
 
+                node->parent->parent->color = COLOR_RED;
+                node = node->parent->parent; //move the node up and repeat
+
+            }
+        }
+            if (node == root){
+                break;
             }
 
         }
-        if (node == root){
-            break;
-        }
+        root->color = COLOR_BLACK;
+        
         
     }
-    root->color = COLOR_BLACK;
     
-}
+    
+
 //this function takes a node as an input and doeas rightrotate on it
 void RedBlackTree::rightRotate(RBTNode* node){
     RBTNode* newparent = node->left;

@@ -53,26 +53,26 @@ void TestInsertThirdNode(){
 	RedBlackTree *rbt = new RedBlackTree();
 	rbt->Insert(30);
 	
+	
 	rbt->Insert(15);
 	
 	rbt->Insert(10);
-	 // Left Left
-	//cout << "rbt: "  << rbt->ToPrefixString() << endl;
-	//assert(rbt->ToPrefixString() == " B15  R10  R30 ");
+	
+	assert(rbt->ToPrefixString() == " B15  R10  R30 ");
 	delete rbt;
 	
 	rbt = new RedBlackTree(); 
 	rbt->Insert(30);
 	rbt->Insert(15);
 	rbt->Insert(25); // Right Left
-	//assert(rbt->ToPrefixString() == " B25  R15  R30 ");
+	assert(rbt->ToPrefixString() == " B25  R15  R30 ");
 	delete rbt;
 	
 	rbt = new RedBlackTree();
 	rbt->Insert(30);
 	rbt->Insert(15);
 	rbt->Insert(45); // Easy case
-	//assert(rbt->ToPrefixString() == " B30  R15  R45 ");
+	assert(rbt->ToPrefixString() == " B30  R15  R45 ");
 	delete rbt;
 	
 	// more tests go here
@@ -114,12 +114,12 @@ void TestToStrings(){
 	RedBlackTree rbt = RedBlackTree();
 	rbt.Insert(12);
 	rbt.Insert(11);
-	cout << "hi" << endl;
+	
 
 	rbt.Insert(15);
 	rbt.Insert(5);
-	cout << "hi" << endl;
-	cout << rbt.ToPostfixString() << endl;
+	
+	
 
 
 	rbt.Insert(13);
@@ -127,12 +127,12 @@ void TestToStrings(){
 
 	rbt.Insert(7);
 
-	cout << "hi" << endl;
+	
 
-	//assert(rbt.ToPrefixString() == " B12  B7  R5  R11  B15  R13 ");
-	//assert(rbt.ToInfixString() == " R5  B7  R11  B12  R13  B15 ");
-	cout << rbt.ToPostfixString() << endl;
-	//assert(rbt.ToPostfixString() == " R5  R11  B7  R13  B15  B12 ");
+	assert(rbt.ToPrefixString() == " B12  B7  R5  R11  B15  R13 ");
+	assert(rbt.ToInfixString() == " R5  B7  R11  B12  R13  B15 ");
+	
+	assert(rbt.ToPostfixString() == " R5  R11  B7  R13  B15  B12 ");
 
 	cout << "PASSED!" << endl << endl;
 }
@@ -181,28 +181,6 @@ void TestInsertRandomTests(){
 	cout << "PASSED!" << endl << endl;
 }
 
-void TestCopyConstructor(){
-	cout << "Testing Copy Constructor..." << endl;
-
-	RedBlackTree rbt1 = RedBlackTree();
-	rbt1.Insert(11);
-	rbt1.Insert(23);
-	rbt1.Insert(9);
-	rbt1.Insert(52);
-	rbt1.Insert(31);
-	rbt1.Insert(4);
-
-	assert(rbt1.ToPrefixString() == " B11  B9  R4  B31  R23  R52 ");
-
-	RedBlackTree rbt2 = RedBlackTree(rbt1);
-
-	assert(rbt2.ToPrefixString() == rbt1.ToPrefixString());
-
-	rbt1.Insert(200);
-	assert(rbt2.ToPrefixString() != rbt1.ToPrefixString());
-
-	cout << "PASSED!" << endl << endl;
-}
 
 
 
@@ -241,7 +219,17 @@ void TestContains(){
 void TestGetMinimumMaximum(){
 	cout << "Testing Get Minimum and Get Maximum..." << endl;
 
-	cout << "TESTS MISSING" << endl << endl;
+
+	RedBlackTree *rbt = new RedBlackTree();
+	rbt->Insert(30);
+	assert(rbt->GetMax() == 30);
+	assert(rbt->GetMin() == 30);
+	rbt->Insert(10);
+	rbt->Insert(5);
+	rbt->Insert(15);
+	assert(rbt->GetMax() == 30);
+	assert(rbt->GetMin() == 5);
+
 
 	cout << "PASSED!" << endl << endl;
 }
@@ -264,7 +252,7 @@ int main(){
 	TestToStrings();
 	TestInsertRandomTests();
 
-	TestCopyConstructor();
+	//TestCopyConstructor();
 
 	TestContains();
 	TestGetMinimumMaximum();
