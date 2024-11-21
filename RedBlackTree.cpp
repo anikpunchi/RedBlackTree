@@ -9,7 +9,33 @@ using namespace std;
 RedBlackTree::RedBlackTree(){
     root = nullptr;
 }
+RedBlackTree::RedBlackTree(const RedBlackTree &tree){
+    if (tree.root == nullptr){
+        root = nullptr;
+        numItems = 0;
+        return;
+    }
+    root = copying(tree.root, nullptr);
+    numItems = tree.numItems;
 
+
+}
+RBTNode* RedBlackTree::copying(RBTNode* node, RBTNode* parentnode){
+    if (node == nullptr){
+        return  nullptr;
+    }
+    //we create a new node and set its attributes equal to our original node
+    RBTNode* newNode = new RBTNode();
+    newNode->key = node->key;
+    newNode->color = node->color;
+    newNode->parent = parentnode;
+
+    //copy the left and right subtrees to get the properties of the left and right nodes
+
+    newNode->left = copying(node->left, newNode);
+    newNode->right = copying(node->right, newNode);
+    return newNode;
+}
 
 void RedBlackTree::Insert(int key){
     if (root == nullptr){

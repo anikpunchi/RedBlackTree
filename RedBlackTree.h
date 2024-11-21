@@ -17,7 +17,7 @@ struct RBTNode{
 class RedBlackTree{
     public:
         RedBlackTree();
-        RedBlackTree(const RedBlackTree&);
+        RedBlackTree(const RedBlackTree &tree);
         RBTNode* copypaste(RBTNode oldroot, RBTNode newroot);
         void Insert(int key);
         bool Contains(int key);
@@ -36,6 +36,7 @@ class RedBlackTree{
         string ToInfixString(RBTNode* node) const;
         string ToPrefixString(RBTNode* node) const;
         string ToPostfixString(RBTNode* node) const;
+        RBTNode* copying(RBTNode* node, RBTNode* parentnode);
 
 
 
