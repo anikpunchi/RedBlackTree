@@ -65,15 +65,22 @@ void RedBlackTree::Remove(int key){
     }
     RBTNode* node = FindNode(key);
     RBTNode* replacement = GetReplacement(node);
+    
     bool IsDoubleBlack = (replacement == nullptr or replacement->color == COLOR_BLACK) && (node->color == COLOR_BLACK);
    
-    if (node->left && node->right){ //two child case
-        int temp = replacement->key; //swap the values of the node and replacement node and then recursively delete the replacement
-        replacement->key = node->key;
-        node->key = temp;
-        Remove(replacement->key);
-    }
+
     RBTNode* Parent = node->parent;
+    if (node->left && node->right){
+        int temp = replacement->key;
+        
+        
+        
+        Remove(replacement->key);
+        node->key = temp;
+        return;
+
+
+    }
     if (replacement == nullptr){ //the right subtree is null
         if (node == root){
             root = nullptr;
@@ -95,7 +102,6 @@ void RedBlackTree::Remove(int key){
             }
         }
         delete node;
-        numItems--;
         return;
     }
     if (node->left == nullptr || node->right == nullptr){ //one child case
@@ -125,6 +131,7 @@ void RedBlackTree::Remove(int key){
         numItems--;
 
     }
+    
    
     
 
@@ -201,14 +208,15 @@ void RedBlackTree::FixDoubleBlack(RBTNode* node){
 
     }
     else{
+        Parent->color = COLOR_RED;
+        sibling->color = COLOR_BLACK;
         if (Parent->right == sibling){
             leftRotate(Parent);
         }
         else{
             rightRotate(Parent);
         }
-        Parent->color = COLOR_RED;
-        sibling->color = COLOR_BLACK;
+       
         FixDoubleBlack(node);
         return;
     }

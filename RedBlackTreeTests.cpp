@@ -343,7 +343,65 @@ void TestGetMinimumMaximum(){
 
 	cout << "PASSED!" << endl << endl;
 }
+void TestRemoveNodeWithTwoChildren(){
+	cout << "Testing Remove Node With Two Children" << endl;
+	RedBlackTree *rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(60);
+	rbt->Insert(30);
+	rbt->Insert(10);
+	rbt->Insert(25);
+	rbt->Insert(24);
+	rbt->Insert(23);
 
+
+	//cout << "rbt before: " << rbt->ToPrefixString() << endl;
+	cout << "test1" << endl;
+	assert(rbt->ToPrefixString() == " B25  R20  B10  B24  R23  R40  B30  B60 ");
+
+	rbt->Remove(20);
+	cout << "rbt after remove(20): " << rbt->ToPrefixString() << endl;
+	cout <<"test2" << endl;
+	assert(rbt->ToPrefixString() == " B25  R23  B10  B24  R40  B30  B60 ");
+	delete rbt;
+
+
+	// IDK what I was thinking!  This test seems unnecessary to me now
+
+	// A test in which the in-order-successor should keep it's
+	// color (I think that's always), but in which the node that
+	// replaced the ios needs to have a fix-up on it to change it's color
+	// to black
+	// 
+	rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(80);
+	rbt->Insert(10);
+	rbt->Insert(30);
+	rbt->Insert(60);
+	rbt->Insert(100);
+	rbt->Insert(5);
+	rbt->Insert(15);
+	rbt->Insert(25);
+	rbt->Insert(35);
+	rbt->Insert(50);
+	rbt->Insert(70);
+	rbt->Insert(90);
+	rbt->Insert(26);
+
+	//cout << "rbt before: " << rbt->ToPrefixString() << endl;
+	assert(rbt->ToPrefixString() == " B40  B20  B10  R5  R15  R30  B25  R26  B35  B80  B60  R50  R70  B100  R90 ");
+
+	rbt->Remove(20);
+	//cout << "rbt after remove(20): " << rbt->ToPrefixString() << endl;
+	assert(rbt->ToPrefixString() == " B40  B25  B10  R5  R15  R30  B26  B35  B80  B60  R50  R70  B100  R90 ");
+	delete rbt;
+
+
+	cout << "PASSED!" << endl << endl;
+}
 
 
 
@@ -365,7 +423,7 @@ int main(){
 
 	TestContains();
 	TestGetMinimumMaximum();
-	
+	TestRemoveNodeWithTwoChildren();
 	
 	
 
