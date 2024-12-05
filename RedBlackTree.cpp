@@ -17,7 +17,7 @@ RedBlackTree::RedBlackTree(const RedBlackTree &tree){
     }
     root = copying(tree.root, nullptr);
     numItems = tree.numItems;
-
+    
 
 }
 RBTNode* RedBlackTree::copying(RBTNode* node, RBTNode* parentnode){
@@ -95,6 +95,7 @@ void RedBlackTree::Remove(int key){
             }
         }
         delete node;
+        numItems--;
         return;
     }
     if (node->left == nullptr || node->right == nullptr){ //one child case
@@ -103,6 +104,7 @@ void RedBlackTree::Remove(int key){
             node->left =nullptr;
             node->right = nullptr;
             delete replacement;
+            
         }
         else{
             if (node->parent->left == node){
@@ -120,6 +122,7 @@ void RedBlackTree::Remove(int key){
                 replacement->color = COLOR_BLACK;
             }
         }
+        numItems--;
 
     }
    
@@ -299,6 +302,7 @@ void RedBlackTree::Insert(int key){
 
     
     FixTree(newNode);
+    numItems++;
     
 
 }

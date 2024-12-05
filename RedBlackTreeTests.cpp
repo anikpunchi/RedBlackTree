@@ -191,18 +191,19 @@ void TestCopyConstructor(){
 	rbt1.Insert(52);
 	rbt1.Insert(31);
 	rbt1.Insert(4);
-	cout << "doing first test" << endl;
+
 	assert(rbt1.ToPrefixString() == " B11  B9  R4  B31  R23  R52 ");
 
 	RedBlackTree rbt2 = RedBlackTree(rbt1);
-	cout << "doing second test" << endl;
+
 	assert(rbt1.Size() == rbt2.Size());
-	cout << "doing third test" << endl;
+	cout <<rbt1.Size() << endl;
 	assert(rbt2.ToPrefixString() == rbt1.ToPrefixString());
 
 	rbt1.Insert(200);
-	cout << "doing fouth test" << endl;
 	assert(rbt2.ToPrefixString() != rbt1.ToPrefixString());
+
+
 
 
 	RedBlackTree rbt3 = RedBlackTree();
@@ -235,47 +236,60 @@ void TestCopyConstructor(){
 	rbt3.Insert(99);
 	rbt3.Insert(89);
 	rbt3.Insert(33);
-	cout << "doing fifth test" << endl;
 
 	assert(rbt3.ToPrefixString() == " B12  R7  B3  B1  R0  R2  B5  R4  R6  B10  B9  R8  B11  R55  B20  B13  R37  B30  R33  B50  B69  R64  B57  B67  R90  B72  R89  B92  R99 ");
 
 	RedBlackTree rbt4 = RedBlackTree(rbt3);
+	
 
 	string s3 = rbt3.ToPrefixString();
 	//cout << "s3: " << s3 << endl;
 	string s4 = rbt4.ToPrefixString();
 	//cout << "s4: " << s4 << endl;
-	cout << "doing sixth test" << endl;
 	assert(rbt3.Size() == rbt4.Size());
-	cout << "doing seventh test" << endl;
 	assert(s3 == s4);
 
 
+	// thoroughly test rbt3 and rbt4 by doing inserts
+	// that should invoke rotations, this helps ensure that 
+	// the trees aren't intertwined with one another
+	rbt4.Insert(1000);
+	rbt4.Insert(1001);
+	rbt4.Insert(1002);
+	rbt4.Insert(1003);
+	rbt4.Insert(1004);
+	
+	assert(rbt3.Size() != rbt4.Size());
+	s3 = rbt3.ToPrefixString();
+	s4 = rbt4.ToPrefixString();
+	assert(s3 != s4);
+	assert(rbt3.ToPrefixString() == " B12  R7  B3  B1  R0  R2  B5  R4  R6  B10  B9  R8  B11  R55  B20  B13  R37  B30  R33  B50  B69  R64  B57  B67  R90  B72  R89  B92  R99 ");
+	//cout << rbt4.ToPrefixString() << endl;
+	assert(rbt4.ToPrefixString() == " B12  B7  B3  B1  R0  R2  B5  R4  R6  B10  B9  R8  B11  B55  B20  B13  R37  B30  R33  B50  R69  B64  B57  B67  B99  R90  B72  R89  B92  R1001  B1000  B1003  R1002  R1004 ");
 	rbt3.Insert(200);
-	cout << "doing eighth test" << endl;
 	assert(rbt3.ToPrefixString() != rbt4.ToPrefixString());
+
 
 
 	// copy of empty tree
 	RedBlackTree rbt5 = RedBlackTree();
 	RedBlackTree rbt6 = RedBlackTree(rbt5);
-	cout << "doing ninth test" << endl;
 	assert(rbt5.ToPrefixString() == "");
-	cout << "doing tenth test" << endl;
-    assert(rbt6.ToPrefixString() == "");
-	cout << rbt6.ToPrefixString() << endl;
+	assert(rbt6.ToPrefixString() == "");
 
 	rbt5.Insert(65);
-	cout << "doing eleventh test" << endl;
-	cout << rbt5.ToPrefixString() << endl;
+	assert(rbt5.ToPrefixString() == " B65 ");
 
 	rbt6.Insert(32);
-	cout << "doing twelveth test" << endl;
 	assert(rbt6.ToPrefixString() == " B32 ");
 
 	cout << "PASSED!" << endl << endl;
-	
 }
+
+
+
+
+
 
 
 
