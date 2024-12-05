@@ -264,7 +264,7 @@ void RedBlackTree::Insert(int key){
         return;
     }
     if (Contains(key)){
-         throw runtime_error("No Duplicates allowed");
+         throw invalid_argument("No Duplicates allowed");
     }
     
     RBTNode* current = root;
