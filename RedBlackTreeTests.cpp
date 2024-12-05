@@ -333,7 +333,6 @@ void TestGetMinimumMaximum(){
 
 
 
-
 int main(){
 
 	
@@ -352,6 +351,9 @@ int main(){
 
 	TestContains();
 	TestGetMinimumMaximum();
+	
+	
+	
 
 	
 	cout << "ALL TESTS PASSED!!" << endl;

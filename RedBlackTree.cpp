@@ -34,8 +34,225 @@ RBTNode* RedBlackTree::copying(RBTNode* node, RBTNode* parentnode){
 
     newNode->left = copying(node->left, newNode);
     newNode->right = copying(node->right, newNode);
-    return newNode;
+    return newNode; 
 }
+RBTNode* RedBlackTree::FindNode(int key){
+    if (root == nullptr){
+        return nullptr;
+    }
+    RBTNode* current = root;
+   
+    while (current != nullptr){
+        if (current->key == key){
+            
+            return current;
+        }
+        else if (key > current->key){
+            current = current->right;
+            
+
+        }
+        else {
+            current = current->left;
+            
+        }
+    }
+    return nullptr;
+}
+void RedBlackTree::Remove(int key){
+    if (!Contains(key)){
+        return;
+    }
+    RBTNode* node = FindNode(key);
+    RBTNode* replacement = GetReplacement(node);
+    bool IsDoubleBlack = (replacement == nullptr or replacement->color == COLOR_BLACK) && (node->color == COLOR_BLACK);
+   
+    if (node->left && node->right){ //two child case
+        int temp = replacement->key; //swap the values of the node and replacement node and then recursively delete the replacement
+        replacement->key = node->key;
+        node->key = temp;
+        Remove(replacement->key);
+    }
+    RBTNode* Parent = node->parent;
+    if (replacement == nullptr){ //the right subtree is null
+        if (node == root){
+            root = nullptr;
+        }
+        else{
+            if (IsDoubleBlack){
+                FixDoubleBlack(node);
+            }
+            else{
+                if (GetSibling(node) != nullptr){
+                    GetSibling(node)->color = COLOR_RED;
+                }
+            }
+            if (node->parent->left == node){
+                Parent->left = nullptr;
+            }
+            else{
+                Parent->right = nullptr;
+            }
+        }
+        delete node;
+        return;
+    }
+    if (node->left == nullptr || node->right == nullptr){ //one child case
+        if (node == root){
+            node->key = replacement->key;
+            node->left =nullptr;
+            node->right = nullptr;
+            delete replacement;
+        }
+        else{
+            if (node->parent->left == node){
+                Parent->left = replacement;
+            }
+            else{
+                Parent->right = replacement;
+            }
+            delete node;
+            replacement->parent = Parent;
+            if (IsDoubleBlack){
+                FixDoubleBlack(replacement);
+            }
+            else{
+                replacement->color = COLOR_BLACK;
+            }
+        }
+
+    }
+   
+    
+
+ 
+}
+void RedBlackTree::FixDoubleBlack(RBTNode* node){
+    //case 1 if the double black node is the root node, just mark the root as black
+    if (root == node){
+        root->color = COLOR_BLACK;
+        return;
+
+    }
+    RBTNode* sibling = GetSibling(node);
+    RBTNode* Parent = node->parent;
+    if (sibling == nullptr){
+        FixDoubleBlack(Parent);
+        return;
+
+    }
+    if (sibling->color == COLOR_BLACK){
+         if ((sibling->left && sibling->left->color == COLOR_RED) || (sibling->right && sibling->right->color == COLOR_RED)){
+            if (Parent->right == sibling){
+                //right right case
+                if (sibling->right && sibling->right->color == COLOR_RED){
+                    leftRotate(Parent);
+                    sibling->right->color = sibling->color;
+                    sibling->color = Parent->color;
+                    Parent->color = COLOR_BLACK;
+                    node->color = COLOR_BLACK;
+
+                }
+                else{
+                    //right left case
+                    rightRotate(sibling);
+                    leftRotate(Parent);
+                    sibling->left->color = Parent->color;
+                    Parent->color = COLOR_BLACK;
+                    node->color = COLOR_BLACK;
+
+                }
+            }
+            else{
+                if (sibling->left && sibling->left->color == COLOR_RED){
+                    rightRotate(Parent);
+                    sibling->left->color = sibling->color;
+                    sibling->color = Parent->color;
+                    Parent->color = COLOR_BLACK;
+                    node->color = COLOR_BLACK;
+
+                }
+                else{
+                    
+                    leftRotate(sibling);
+                    rightRotate(Parent);
+                    sibling->right->color = Parent->color;
+                    Parent->color = COLOR_BLACK;
+                    node->color = COLOR_BLACK;
+
+                }
+
+            }
+
+         }
+         else{
+            sibling->color = COLOR_RED;
+            node->color = COLOR_BLACK;
+            if (Parent->color == COLOR_RED){
+                Parent->color = COLOR_BLACK;
+            }
+            else{
+                FixDoubleBlack(Parent);
+            }
+         }
+
+    }
+    else{
+        if (Parent->right == sibling){
+            leftRotate(Parent);
+        }
+        else{
+            rightRotate(Parent);
+        }
+        Parent->color = COLOR_RED;
+        sibling->color = COLOR_BLACK;
+        FixDoubleBlack(node);
+        return;
+    }
+
+}
+RBTNode* RedBlackTree::GetReplacement(RBTNode* node){
+    if (node->left && node->right){ //two child case
+        return InOrderSuccessor(node->right);
+    }
+    else if (node->left || node->right){ //one child case
+        if (node->left){
+            return node->left;
+        }
+        else{
+            return node->right;
+        }
+    }
+    else{ //no child case
+        return nullptr;
+    }
+}
+RBTNode* RedBlackTree::InOrderSuccessor(RBTNode* node){
+    RBTNode* current = node;
+    RBTNode* parent = nullptr;
+    while (current != nullptr){
+        parent = current;
+        current = current->left;
+    }
+    return parent;
+}
+//this function gets the sibling node of a given node
+RBTNode* RedBlackTree::GetSibling(RBTNode* node){
+    //edge case: if the node is the root node, there should be no siblings
+    if (root == node){
+        return nullptr;
+    }
+    RBTNode* Parent = node->parent;
+    //if the node is a left child the sibling will be the right child of the parent
+    if (node == Parent->left){
+        return Parent->right;
+    }
+    //right child case
+    else{
+        return Parent->left;
+    }
+}
+
 
 void RedBlackTree::Insert(int key){
     if (root == nullptr){
