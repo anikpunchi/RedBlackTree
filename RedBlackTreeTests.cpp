@@ -402,6 +402,150 @@ void TestRemoveNodeWithTwoChildren(){
 
 	cout << "PASSED!" << endl << endl;
 }
+void TestRemoveLeaf(){
+cout << "Testing Remove Leaf..." << endl;
+RedBlackTree rbt = RedBlackTree();
+rbt.Insert(40);
+// removing root
+rbt.Remove(40);
+//cout << "rbt: " << rbt.ToPrefixString() << endl;
+assert(rbt.ToPrefixString() == "");
+//assert(rbt.root == nullptr);
+cout <<rbt.Size() << endl;
+assert(rbt.Size() == 0);
+rbt.Insert(40);
+rbt.Insert(23);
+rbt.Remove(23);
+//cout << "rbt after: " << rbt.ToPrefixString() << endl;
+assert(rbt.ToPrefixString() == " B40 ");
+rbt.Insert(23);
+rbt.Insert(52);
+rbt.Remove(52);
+cout << "{" << rbt.ToPrefixString() << "}" << endl;
+assert(rbt.ToPrefixString() == " B40  R23 ");
+
+rbt.Insert(52);
+rbt.Insert(15);
+rbt.Remove(15);
+//cout << "rbt after: " << rbt.ToPrefixString() << endl;
+assert(rbt.ToPrefixString() == " B40  B23  B52 ");
+cout << rbt.Size() << endl;
+assert(rbt.Size() == 3);
+cout << "PASSED!" << endl << endl;
+}
+
+void TestRemoveWithDoubleBlack(){
+	cout << "Testing Remove (Double Black Condition)" << endl;
+
+	// Right right case
+	RedBlackTree *rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(60);
+	rbt->Insert(70);
+	assert(rbt->ToPrefixString() == " B40  B20  B60  R70 ");
+
+	rbt->Remove(20);
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B60  B40  B70 ");
+	delete rbt;
+
+
+	// Right left case
+	rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(60);
+	rbt->Insert(50);
+	
+	assert(rbt->ToPrefixString() == " B40  B20  B60  R50 ");
+	
+
+	rbt->Remove(20);
+	
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B50  B40  B60 ");
+	delete rbt;
+
+
+
+	// Left right case
+	rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(60);
+	rbt->Insert(30);
+	
+	assert(rbt->ToPrefixString() == " B40  B20  R30  B60 ");
+
+	rbt->Remove(60);
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B30  B20  B40 ");
+	delete rbt;
+
+
+
+	// Left left case
+	rbt = new RedBlackTree();
+	rbt->Insert(40);
+	rbt->Insert(20);
+	rbt->Insert(60);
+	rbt->Insert(10);
+	
+	assert(rbt->ToPrefixString() == " B40  B20  R10  B60 ");
+
+	rbt->Remove(60);
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B20  B10  B40 ");
+	delete rbt;
+
+
+	// done with red child cases
+	// below are two cases in which the sibling is red and has no red children
+	// we will delete a black node which will create a double black to remove
+	rbt = new RedBlackTree();
+	rbt->Insert(50);
+	rbt->Insert(30);
+	rbt->Insert(70);
+	rbt->Insert(60);
+	rbt->Insert(80);
+	rbt->Insert(55);
+	rbt->Remove(55);
+	assert(rbt->ToPrefixString() == " B50  B30  R70  B60  B80 ");
+
+	rbt->Remove(30);
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B70  B50  R60  B80 ");
+	delete rbt;
+
+
+
+
+	rbt = new RedBlackTree();
+	rbt->Insert(50);
+	rbt->Insert(30);
+	rbt->Insert(70);
+	rbt->Insert(20);
+	rbt->Insert(40);
+	rbt->Insert(45);
+	rbt->Remove(45);
+	cout <<"eighth" << endl;
+	assert(rbt->ToPrefixString() == " B50  R30  B20  B40  B70 ");
+
+	rbt->Remove(70);
+	//cout << "rbt after: " << rbt->ToPrefixString() << endl;
+	
+	assert(rbt->ToPrefixString() == " B30  B20  B50  R40 ");
+	delete rbt;
+
+	cout << "PASSED!" << endl << endl;
+}
+
 
 
 
@@ -424,6 +568,8 @@ int main(){
 	TestContains();
 	TestGetMinimumMaximum();
 	TestRemoveNodeWithTwoChildren();
+	TestRemoveLeaf();
+	TestRemoveWithDoubleBlack();
 	
 	
 

@@ -60,9 +60,12 @@ RBTNode* RedBlackTree::FindNode(int key){
     return nullptr;
 }
 void RedBlackTree::Remove(int key){
+
     if (!Contains(key)){
-        return;
+        throw invalid_argument("error");
+       
     }
+    numItems--;
     RBTNode* node = FindNode(key);
     RBTNode* replacement = GetReplacement(node);
     
@@ -84,6 +87,7 @@ void RedBlackTree::Remove(int key){
     if (replacement == nullptr){ //the right subtree is null
         if (node == root){
             root = nullptr;
+            
         }
         else{
             if (IsDoubleBlack){
@@ -154,6 +158,7 @@ void RedBlackTree::FixDoubleBlack(RBTNode* node){
     if (sibling->color == COLOR_BLACK){
          if ((sibling->left && sibling->left->color == COLOR_RED) || (sibling->right && sibling->right->color == COLOR_RED)){
             if (Parent->right == sibling){
+               
                 //right right case
                 if (sibling->right && sibling->right->color == COLOR_RED){
                     leftRotate(Parent);
@@ -164,11 +169,16 @@ void RedBlackTree::FixDoubleBlack(RBTNode* node){
 
                 }
                 else{
+                    
                     //right left case
                     rightRotate(sibling);
+                    
                     leftRotate(Parent);
-                    sibling->left->color = Parent->color;
+                    
+                   
+                    sibling->parent->color = Parent->color;
                     Parent->color = COLOR_BLACK;
+                    sibling->parent->right->color = COLOR_BLACK;
                     node->color = COLOR_BLACK;
 
                 }
@@ -183,12 +193,16 @@ void RedBlackTree::FixDoubleBlack(RBTNode* node){
 
                 }
                 else{
-                    
                     leftRotate(sibling);
+                    
                     rightRotate(Parent);
-                    sibling->right->color = Parent->color;
+                    
+                    
+                    sibling->parent->color = Parent->color;
                     Parent->color = COLOR_BLACK;
+                    sibling->parent->left->color = COLOR_BLACK;
                     node->color = COLOR_BLACK;
+                    
 
                 }
 
