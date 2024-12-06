@@ -402,6 +402,7 @@ void TestRemoveNodeWithTwoChildren(){
 
 	cout << "PASSED!" << endl << endl;
 }
+
 void TestRemoveLeaf(){
 cout << "Testing Remove Leaf..." << endl;
 RedBlackTree rbt = RedBlackTree();
@@ -548,6 +549,22 @@ void TestRemoveWithDoubleBlack(){
 
 
 
+void randomtest(){
+	RedBlackTree rbt = RedBlackTree();
+	for (int i = 0; i < 200; ++i){
+		rbt.Insert(i);
+		
+	}
+	assert(rbt.Size() == 200);
+	for (int i = 0; i < 200; ++i){
+		
+		rbt.Remove(i);
+		
+	}
+	cout <<rbt.Size() << endl;
+	assert(rbt.Size() == 0);
+}
+
 
 int main(){
 
@@ -570,6 +587,8 @@ int main(){
 	TestRemoveNodeWithTwoChildren();
 	TestRemoveLeaf();
 	TestRemoveWithDoubleBlack();
+	randomtest();
+	
 	
 	
 

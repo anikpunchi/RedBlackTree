@@ -31,12 +31,8 @@ class RedBlackTree{
         string ToPostfixString() const { return ToPostfixString(root);};
         void Remove(int data);
         
-        //~RedBlackTree();
-        RBTNode* root;
-         RBTNode* GetSibling(RBTNode* node);
-         RBTNode* InOrderSuccessor(RBTNode* node);
-        RBTNode* GetReplacement(RBTNode* node);
-        RBTNode* FindNode(int key);
+        ~RedBlackTree();
+        
         
     private:
 
@@ -50,6 +46,12 @@ class RedBlackTree{
         string ToPrefixString(RBTNode* node) const;
         string ToPostfixString(RBTNode* node) const;
         RBTNode* copying(RBTNode* node, RBTNode* parentnode);
+        void deconstructor_helper(RBTNode* node);
+        RBTNode* root;
+        RBTNode* GetSibling(RBTNode* node);
+        RBTNode* InOrderSuccessor(RBTNode* node);
+        RBTNode* GetReplacement(RBTNode* node);
+        RBTNode* FindNode(int key);
         
        
         

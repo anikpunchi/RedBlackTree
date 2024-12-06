@@ -20,6 +20,18 @@ RedBlackTree::RedBlackTree(const RedBlackTree &tree){
     
 
 }
+RedBlackTree::~RedBlackTree(){
+    deconstructor_helper(root);
+}
+void RedBlackTree::deconstructor_helper(RBTNode* node){
+    if (node == nullptr){
+        return;
+    }
+    deconstructor_helper(node->left);
+    deconstructor_helper(node->right);
+    delete node;
+   
+}
 RBTNode* RedBlackTree::copying(RBTNode* node, RBTNode* parentnode){
     if (node == nullptr){
         return  nullptr;
@@ -132,7 +144,7 @@ void RedBlackTree::Remove(int key){
                 replacement->color = COLOR_BLACK;
             }
         }
-        numItems--;
+        
 
     }
     
