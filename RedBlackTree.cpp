@@ -92,6 +92,8 @@ void RedBlackTree::Remove(int key){
         
         Remove(replacement->key);
         node->key = temp;
+        //delete replacement;
+        numItems++;
         return;
 
 

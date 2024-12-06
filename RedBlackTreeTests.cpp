@@ -340,7 +340,7 @@ void TestGetMinimumMaximum(){
 	assert(rbt->GetMax() == 30);
 	assert(rbt->GetMin() == 5);
 
-
+	delete rbt;
 	cout << "PASSED!" << endl << endl;
 }
 void TestRemoveNodeWithTwoChildren(){
@@ -550,6 +550,7 @@ void TestRemoveWithDoubleBlack(){
 
 
 void randomtest(){
+	cout << "Trying random tests" << endl;
 	RedBlackTree rbt = RedBlackTree();
 	for (int i = 0; i < 200; ++i){
 		rbt.Insert(i);
@@ -561,9 +562,54 @@ void randomtest(){
 		rbt.Remove(i);
 		
 	}
+	cout << rbt.Size() << endl;
+	assert(rbt.Size() == 0);
+	cout << "Passed!" << endl;
+}
+
+void SpecialTestOne(){
+	cout << "Special Test One..." << endl;
+
+	RedBlackTree rbt = RedBlackTree();
+	rbt.Insert(160);
+	//cout << "rbt.Size(): " << to_string(rbt.Size()) << endl;
+	assert(rbt.Size() == 1);
+	rbt.Insert(388);
+	assert(rbt.Size() == 2);
+	rbt.Insert(434);
+	assert(rbt.Size() == 3);
+	rbt.Insert(88);
+	assert(rbt.Size() == 4);
+	rbt.Insert(79);
+	assert(rbt.Size() == 5);
+	assert(rbt.ToPrefixString() == " B388  B88  R79  R160  B434 ");
+
+	//cout << "rbt: " << rbt.ToPrefixString() << endl;
+	cout << "Before removing 160 size is " << rbt.Size() << endl;
+	rbt.Remove(160);
+	cout << "after removing 160 size is " << rbt.Size() << endl;
+	//cout << "\n\nrbt: " << rbt.ToPrefixString() << endl;
+	cout << "Before removing 388 size is " << rbt.Size() << endl;
+	rbt.Remove(388);
+	cout << "after removing 388 size is " << rbt.Size() << endl;
+	//cout << "\n\nrbt: " << rbt.ToPrefixString() << endl;
+	cout << "Before removing 434 size is " << rbt.Size() << endl;
+	rbt.Remove(434);
+	//cout << "\n\nrbt: " << rbt.ToPrefixString() << endl;
+	cout << "after removing 434 size is " << rbt.Size() << endl;
+	cout << "Before removing 88 size is " << rbt.Size() << endl;
+	rbt.Remove(88);
+	cout << "after removing 88 size is " << rbt.Size() << endl;
+	//cout << "\n\nrbt: " << rbt.ToPrefixString() << endl;
+	cout << "Before removing 79 size is " << rbt.Size() << endl;
+	rbt.Remove(79);
+	cout << "after removing 79 size is " << rbt.Size() << endl;
+	//cout << "\n\nrbt: " << rbt.ToPrefixString() << endl;
 	cout <<rbt.Size() << endl;
 	assert(rbt.Size() == 0);
+	cout << "PASSED!" << endl << endl;
 }
+
 
 
 int main(){
@@ -588,6 +634,7 @@ int main(){
 	TestRemoveLeaf();
 	TestRemoveWithDoubleBlack();
 	randomtest();
+	SpecialTestOne();
 	
 	
 	

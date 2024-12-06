@@ -40,7 +40,9 @@ int main(){
 	for (int i = 0; i < 5; ++i){
 		int ID_Number = rand() % N;
 		clock_t starttime = clock();
+		if (!rbt.Contains(ID_Number)){
 		rbt.Insert(ID_Number);
+		}
 		//end the time
 		clock_t endtime = clock();
 		//do duration as above
