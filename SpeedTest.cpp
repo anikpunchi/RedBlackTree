@@ -37,17 +37,23 @@ int main(){
 
 	}
 	//do the same for people joing
-	for (int i = 0; i < 5; ++i){
+	int count = 0;
+	while(count < 5){
 		int ID_Number = rand() % N;
-		clock_t starttime = clock();
+		
 		if (!rbt.Contains(ID_Number)){
-		rbt.Insert(ID_Number);
+			count++;
+
+			clock_t starttime = clock();
+			rbt.Insert(ID_Number);
+			clock_t endtime = clock();
+			double duration2 = (static_cast<double>(endtime - starttime)) / CLOCKS_PER_SEC;
+			cout << "insert time for ID Number " << ID_Number << " is " << duration2 << "seconds" << endl;
 		}
 		//end the time
-		clock_t endtime = clock();
+		
 		//do duration as above
-		double duration2 = (static_cast<double>(endtime - starttime)) / CLOCKS_PER_SEC;
-		cout << "insert time for ID Number " << ID_Number << " is " << duration2 << "seconds" << endl;
+		
 
 	}
 
