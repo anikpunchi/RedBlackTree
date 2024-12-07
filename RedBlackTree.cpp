@@ -93,7 +93,7 @@ void RedBlackTree::Remove(int key){
         Remove(replacement->key);
         node->key = temp;
         //delete replacement;
-        numItems++;
+        numItems++; //here we add because our function already reduces numitems and the recursive step will do it again
         return;
 
 
